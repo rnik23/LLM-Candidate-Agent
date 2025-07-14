@@ -12,14 +12,21 @@ CandidateAgent is a prototype LLM-powered resume assistant. Recruiters can chat 
 ## Setup
 1. Install Python 3.10+
 2. `pip install -r requirements.txt`
-3. Set the `OPENAI_API_KEY` environment variable
+3. Create a `.env` file in the project root and add your API key (this file is already listed in `.gitignore`):
+   ```
+   OPENAI_API_KEY=sk-...
+   ```
+   Alternatively export the variable in your shell with `export OPENAI_API_KEY=sk-...`.
 4. `streamlit run app/main.py`
+   
+   The application uses **python-dotenv** to automatically load environment
+   variables from `.env`, so the API key will be available when the app starts.
 
 ## Docker
 Build and run the app in Docker:
 ```bash
 docker build -t candidate-agent .
-docker run -p 8501:8501 -e OPENAI_API_KEY=sk-... candidate-agent
+docker run -p 8501:8501 --env-file .env candidate-agent
 ```
 
 ## Next Steps
