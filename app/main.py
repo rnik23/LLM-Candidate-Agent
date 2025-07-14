@@ -1,5 +1,8 @@
 import streamlit as st
 from agent import ResumeAgent
+from dotenv import load_dotenv
+
+load_dotenv()
 
 st.title("CandidateAgent")
 
