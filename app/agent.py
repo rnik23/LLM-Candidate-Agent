@@ -6,15 +6,19 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 
 
+from langchain.docstore.document import Document
 from resume_loader import load_resume
 
 class ResumeAgent:
-    def __init__(self, resume_path: str = "data/My_Resume_Nikhil_Racha_K.pdf", prompt_path: str = "app/prompt_template.txt"):
-        self.db = self._build_vector_store(resume_path)
+    def __init__(self, resume_path: str = "data/My_Resume_Nikhil_Racha_K.pdf", prompt_path: str = "app/prompt_template.txt", resume_text: str | None = None):
+        self.db = self._build_vector_store(resume_path, resume_text)
         self.chain = self._build_chain(prompt_path)
 
-    def _build_vector_store(self, resume_path: str):
-        documents = load_resume(Path(resume_path))
+    def _build_vector_store(self, resume_path: str, resume_text: str | None = None):
+        if resume_text is not None:
+            documents = [Document(page_content=resume_text)]
+        else:
+            documents = load_resume(Path(resume_path))
         embeddings = OpenAIEmbeddings()
         return FAISS.from_documents(documents, embeddings)
 
